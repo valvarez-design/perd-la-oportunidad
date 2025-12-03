@@ -1,0 +1,46 @@
+/* the vibe is early 2000s apple aesthetic with mexican design inspiration*/
+
+body {
+    background-color: black;
+    font-family: brush 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: orchid;
+    margin: 0;
+    padding: 20px;
+}
+h1 {
+    font-size: 48px;
+    text-align: center;
+    margin-top: 50px;
+    cursor: pointer;
+}
+/* stopped working will debug later */
+h1:hover {
+    color: orchid;
+    text-decoration: blink;
+}
+
+h2
+{
+    font-size: 20px;
+    text-align: center;
+    margin-top: 15px;
+}
+
+h3
+{
+    font-size: 20px;
+    text-align: center;
+    margin-top: 15px;
+}
+h4
+{
+    font-size: 24px;
+    text-align: center;
+    margin-top: 10px;
+}
+h5
+{
+    font-size: 35px;
+    text-align: center;
+    margin-top: 5px;
+}
