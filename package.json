@@ -12,10 +12,12 @@
   },
   "name": "perdilaoportunidad",
   "version": "1.0.0",
-  "description": "",
+  "description": "Missed Connections NYC - A real-time map of missed connections",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "node test-connection.js"
   },
   "author": "",
   "license": "ISC"
