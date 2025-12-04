@@ -1,5 +1,10 @@
 node_modules/
-2.env
-3.DS_Store
-4package-lock.json
+# ignore local env files
+.env
+
+# system / editor
+.DS_Store
+
+# dependency and log files
+package-lock.json
 *.log
