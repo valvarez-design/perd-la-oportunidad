@@ -1,44 +1,54 @@
 let fetch = require('node-fetch');
 
-//geocoding function using Mapbox for better NYC accuracy
+// NYC Open Data API endpoint - FREE, no API key needed!
+const NYC_ADDRESS_API = "https://data.cityofnewyork.us/resource/uf93-f8nk.json";
+
+// Geocoding function using NYC Open Data
 async function geocodeLocation(location) {
     try {
-        // Get Mapbox token from environment
-        let mapboxToken = process.env.MAPBOX_TOKEN;
+        console.log('Geocoding with NYC Open Data:', location);
         
-        if (!mapboxToken) {
-            throw new Error('MAPBOX_TOKEN not found in environment variables');
-        }
+        // Clean up the location string
+        let cleanLocation = location.trim();
         
-        // Add NYC context to improve results
-        let query = `${location}, New York City, NY`;
+        // Build the query URL with filters
+        // $limit=5 gets top 5 results
+        // $where clause filters for valid lat/lon
+        let url = `${NYC_ADDRESS_API}?$q=${encodeURIComponent(cleanLocation)}&$limit=5&$where=latitude IS NOT NULL AND longitude IS NOT NULL`;
         
-        // Mapbox Geocoding API endpoint
-        // bbox parameter limits results to NYC area for better accuracy
-        let url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${mapboxToken}&limit=1&bbox=-74.259090,40.477399,-73.700272,40.917577`;
-        
-        console.log('Geocoding with Mapbox:', location);
-        
-        //make request
+        // Make the request
         let response = await fetch(url);
         
         if (!response.ok) {
-            throw new Error(`Mapbox API error: ${response.status}`);
+            throw new Error(`NYC API error: ${response.status}`);
         }
         
-        //parse response
+        // Parse the JSON response
         let data = await response.json();
         
-        //check if we got results
-        if (data.features && data.features.length > 0) {
-            let coordinates = data.features[0].geometry.coordinates;
-            // Mapbox returns [lng, lat], we need {lat, lng}
-            return {
-                lng: coordinates[0],
-                lat: coordinates[1]
+        // Check if we got results
+        if (data && data.length > 0) {
+            console.log(`Found ${data.length} results for "${location}":`);
+            
+            // Log all results for debugging
+            data.forEach((result, i) => {
+                let address = `${result.house_number || ''} ${result.street_name || ''}, ${result.boroname || ''}`.trim();
+                console.log(`  ${i + 1}. ${address}`);
+            });
+            
+            // Use the first result
+            let firstResult = data[0];
+            let coordinates = {
+                lat: parseFloat(firstResult.latitude),
+                lng: parseFloat(firstResult.longitude)
             };
+            
+            let fullAddress = `${firstResult.house_number || ''} ${firstResult.street_name || ''}, ${firstResult.boroname || ''}`.trim();
+            console.log(`Using: ${fullAddress} (${coordinates.lat}, ${coordinates.lng})`);
+            
+            return coordinates;
         } else {
-            throw new Error('Location not found in NYC area');
+            throw new Error('Location not found in NYC Open Data');
         }
     } catch (error) {
         console.error('Geocoding error:', error.message);
@@ -46,5 +56,4 @@ async function geocodeLocation(location) {
     }
 }
 
-//export the function
 module.exports = { geocodeLocation };

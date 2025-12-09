@@ -15,18 +15,19 @@
 </head>
 
 <body>
-    <h1 id="homeLink"> Missed Connections</h1>
+    <body>
+    <h1> Missed Connections </h1>
     <h2> New York City </h2>
     <div id="map"></div>
 
     <div id="userinput">
         <h3> tell us about your missed connection <3 </h3>
                 <input type="text" id="title" placeholder = "give them a name">
-                <input type="text" id="locationinput" placeholder="where did they get away?">
+                <input type="text" id="locationinput" placeholder="where did they get away? Be as specific as you can! Ex: Myrtle Ave and Broadway Ave, Brooklyn">
                 <textarea id="descriptioninput" rows="4" cols="50" placeholder="what was their vibe?"></textarea>
                 <button id="submitBtn">Submit</button>
     </div>
-
+    <h1 id="homeLink" onclick="window.location.href='index.html'" style="cursor: pointer;"> back to home</h1>
     <script src="map.js"></script>
 </body>
 
