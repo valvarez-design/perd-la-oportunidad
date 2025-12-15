@@ -32,7 +32,8 @@ mongoose.connect(process.env.MONGODB_URI)
     .catch((err) => {
         console.error('Error connecting to MongoDB:', err);
     });
-//geocode function using MULTIPLE NYC Open Data APIs with fallbacks
+    
+//geocode function nyc data to nominatim fallback
 async function geocodeNYCLocation(locationQuery) {
     
     // Multiple NYC datasets to try

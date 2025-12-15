@@ -3,7 +3,7 @@ let fetch = require('node-fetch');
 // NYC Open Data API endpoint
 const NYC_ADDRESS_API = "https://data.cityofnewyork.us/resource/uf93-f8nk.json";
 
-// Geocoding function using NYC Open Data
+// Geocoding function w nyc open data
 async function geocodeLocation(location) {
     try {
         console.log('Geocoding with NYC Open Data:', location);
@@ -11,9 +11,7 @@ async function geocodeLocation(location) {
         // Clean up the location string
         let cleanLocation = location.trim();
         
-        // Build the query URL with filters
-        // $limit=5 gets top 5 results
-        // $where clause filters for valid lat/lon
+        // Build the query with filters
         let url = `${NYC_ADDRESS_API}?$q=${encodeURIComponent(cleanLocation)}&$limit=5&$where=latitude IS NOT NULL AND longitude IS NOT NULL`;
         
         // Make the request
@@ -23,7 +21,6 @@ async function geocodeLocation(location) {
             throw new Error(`NYC API error: ${response.status}`);
         }
         
-        // Parse the JSON response
         let data = await response.json();
         
         // Check if we got results

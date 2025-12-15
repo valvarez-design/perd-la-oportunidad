@@ -14,8 +14,8 @@ socket.on('disconnect', () => {
 //initialize map centered on new york city + define bounds
 let map = L.map('map', {
     preferCanvas: true, //stabilizes rendering of heart markers
-    maxBounds: [[40.4774, -74.2591], [40.9176, -73.7004]], // NYC bounding box
-    maxBoundsViscosity: 1.0, //prevent scroll outside of bounds
+    maxBounds: [[40.4774, -74.2591], [40.9176, -73.7004]], // NYC map bounds
+    maxBoundsViscosity: 1.0, //prevents panning outside bounds
     minZoom: 11, //minimum zoom
     maxZoom: 19, //maximum zoom
 }).setView([40.7128, -74.0060], 12); //center on NYC
@@ -23,14 +23,14 @@ let map = L.map('map', {
 
 
 
-//add tile layer to map 
+//add tile layer to map
 L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
     attribution: '© OpenStreetMap © CartoDB',
     subdomains: 'abcd',
     maxZoom: 19
 }).addTo(map);
 
-//custom heart icon for markers 
+//custom heart icon for markers on map
 let heartIcon = L.divIcon({
     className: 'custom-heart-marker',
     html: '<svg width="30" height="30" viewBox="0 0 24 24" fill="orchid" stroke="#ff69b4" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>',
@@ -42,7 +42,7 @@ let heartIcon = L.divIcon({
 //variable to hold selected location coordinates
 let selectedLocation = null;
 
-//create suggestions dropdown
+//create suggestions dropdown...will do eventually
 let locationInput = document.getElementById('locationinput');
 let suggestionsDiv = document.createElement('div');
 suggestionsDiv.className = 'suggestions-dropdown';
@@ -58,9 +58,11 @@ locationInput.addEventListener('input', async (e) => {
         suggestionsDiv.style.display = 'none';
         return;
     }
+
 //show loading message
     suggestionsDiv.innerHTML = 'loading...';
     suggestionsDiv.style.display = 'block';
+
 //debounce geocoding requests
     geocodeTimeout = setTimeout(async (e) => {
         try {
@@ -150,7 +152,7 @@ socket.on('newConnection', (connection) => {
     addMarkerToMap(connection);
 });
 
-//load existing connections on page load
+//load existing connections on intial page load
 loadExistingConnections();
 
 //handle form submission
